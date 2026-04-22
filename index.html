@@ -127,27 +127,72 @@
     }
     .splash-tagline small { display: block; opacity: 0.65; margin-top: 2px; }
 
-    .lang-list { position: relative; z-index: 2; width: 100%; max-width: 300px; display: flex; flex-direction: column; gap: 12px; }
+    .lang-list { position: relative; z-index: 2; width: 100%; max-width: 320px; display: flex; flex-direction: column; gap: 16px; }
     .lang-label {
       font-family: 'Poppins', sans-serif; font-size: 11px;
       text-transform: uppercase; letter-spacing: 0.14em;
       color: var(--text-muted); text-align: center; margin: 0 0 4px;
     }
-    .lang-btn {
-      appearance: none; border: none; cursor: pointer;
-      padding: 14px 18px; border-radius: 16px;
-      background: var(--glass); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-      box-shadow: 0 4px 16px rgba(0,0,0,0.06), inset 0 0 0 1px rgba(255,255,255,0.8);
-      display: flex; align-items: center; gap: 14px; text-align: left;
-      transition: transform .18s, box-shadow .18s;
+    .lang-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
     }
-    [data-theme="dark"] .lang-btn { box-shadow: 0 4px 16px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(38,166,154,0.28); }
-    .lang-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(0,200,81,0.22), inset 0 0 0 1px rgba(255,255,255,0.9); }
-    .lang-flag { font-size: 28px; line-height: 1; }
-    .lang-texts { flex: 1; }
-    .lang-name { font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 15px; color: var(--text); }
-    .lang-sub  { font-family: 'Inter', sans-serif; font-size: 11px; color: var(--text-muted); }
-    .lang-arrow { color: var(--primary); font-size: 18px; }
+    .lang-btn {
+      appearance: none; cursor: pointer;
+      position: relative; overflow: hidden;
+      aspect-ratio: 1 / 1;
+      padding: 18px 10px 14px;
+      border-radius: 22px;
+      border: 1.5px solid rgba(255,255,255,0.55);
+      background:
+        linear-gradient(160deg, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.72) 100%);
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      box-shadow:
+        0 8px 24px rgba(0,0,0,0.06),
+        inset 0 1px 0 rgba(255,255,255,0.9);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+      transition: transform .22s cubic-bezier(.2,.9,.3,1.3), box-shadow .3s, border-color .3s;
+    }
+    [data-theme="dark"] .lang-btn {
+      border-color: rgba(38,166,154,0.35);
+      background: linear-gradient(160deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.08);
+    }
+    .lang-btn::before {
+      content: ''; position: absolute; inset: -30% -30% auto auto;
+      width: 120%; height: 120%; border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,200,81,0.28) 0%, transparent 65%);
+      opacity: 0; transition: opacity .35s; pointer-events: none;
+    }
+    .lang-btn[data-lang="en"]::before {
+      background: radial-gradient(circle, rgba(38,166,154,0.3) 0%, transparent 65%);
+    }
+    .lang-btn:hover { transform: translateY(-3px) scale(1.02); border-color: rgba(0,200,81,0.55); box-shadow: 0 14px 32px rgba(0,200,81,0.28), inset 0 1px 0 rgba(255,255,255,0.95); }
+    .lang-btn:hover::before { opacity: 1; }
+    .lang-btn:active { transform: translateY(-1px) scale(0.99); }
+
+    .lang-flag {
+      font-size: 40px; line-height: 1;
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.12));
+      transition: transform .3s;
+    }
+    .lang-btn:hover .lang-flag { transform: scale(1.08); }
+    .lang-code {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700; font-size: 22px;
+      letter-spacing: 0.08em;
+      color: var(--text);
+      position: relative;
+    }
+    .lang-btn[data-lang="it"] .lang-code {
+      background: linear-gradient(135deg, #00C851 0%, #26A69A 100%);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .lang-btn[data-lang="en"] .lang-code {
+      background: linear-gradient(135deg, #00796B 0%, #FF6B35 100%);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
     .splash-disclaimer {
       position: absolute; bottom: 20px; left: 0; right: 0; text-align: center;
       font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--text-muted);
@@ -300,7 +345,7 @@
     .messages::-webkit-scrollbar-thumb { background: rgba(141,110,99,0.25); border-radius: 3px; }
 
     /* ───────── Empty state ───────── */
-    .empty-state { padding: 12px 4px; animation: nfFadeUp .4s ease; }
+    .empty-state { padding: 12px 4px; }
     .empty-center { text-align: center; margin-bottom: 18px; }
     .empty-kicker {
       display: inline-block; padding: 5px 12px; border-radius: 20px;
@@ -414,7 +459,11 @@
       background: transparent;
       font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.4;
       color: var(--text); max-height: 120px; padding: 8px 0;
+      overflow-y: hidden;
+      scrollbar-width: none;
     }
+    .input-row textarea::-webkit-scrollbar { display: none; width: 0; height: 0; }
+    .input-row textarea::-webkit-scrollbar-button { display: none; }
     .input-row textarea::placeholder { color: var(--text-muted); opacity: 0.8; }
 
     /* ───────── NF Send Button ───────── */
@@ -424,12 +473,14 @@
       display: inline-flex; align-items: center; justify-content: center;
       position: relative; flex-shrink: 0;
       cursor: not-allowed;
+      color: rgba(0,0,0,0.35);
       background: rgba(0,0,0,0.05);
-      transition: transform .22s cubic-bezier(.2,.9,.3,1.3), box-shadow .3s, background-color .3s;
+      transition: transform .22s cubic-bezier(.2,.9,.3,1.3), box-shadow .3s, background-color .3s, color .3s;
     }
-    [data-theme="dark"] .nf-send { background: rgba(255,255,255,0.06); }
+    [data-theme="dark"] .nf-send { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.4); }
     .nf-send.active {
       cursor: pointer;
+      color: #fff;
       background-image: linear-gradient(135deg, #00C851 0%, #26A69A 55%, #FF6B35 100%);
       background-color: transparent;
       background-size: 200% 200%;
@@ -438,7 +489,35 @@
     }
     .nf-send.active:hover { transform: scale(1.06); }
     .nf-send.active:active { transform: scale(0.94); }
-    .nf-send .nf-icon { display: block; }
+
+    /* Icon position: centered when disabled, up-right corner when active to make room for NF */
+    .nf-send .nf-icon {
+      display: block; position: absolute;
+      top: 50%; left: 50%; transform: translate(-50%, -50%);
+      z-index: 2;
+      filter: drop-shadow(0 1px 1px rgba(0,0,0,0.12));
+      transition: top .28s cubic-bezier(.2,.8,.3,1.2), left .28s, right .28s, transform .28s;
+    }
+    .nf-send.active .nf-icon {
+      top: 5px; left: auto; right: 5px; transform: none;
+    }
+
+    .nf-send .nf-monogram {
+      position: absolute;
+      left: 6px; bottom: 4px;
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.01em;
+      line-height: 1;
+      color: rgba(255,255,255,0.96);
+      pointer-events: none;
+      z-index: 3;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.22);
+      opacity: 0;
+      transition: opacity .3s ease .05s;
+    }
+    .nf-send.active .nf-monogram { opacity: 1; }
     .nf-send .nf-ring {
       position: absolute; inset: -4px; border-radius: 50%;
       border: 1.5px solid rgba(0,200,81,0.45); opacity: 0;
@@ -504,22 +583,16 @@
 
     <div class="lang-list">
       <p class="lang-label">🌍 Scegli la lingua · Choose language</p>
-      <button class="lang-btn" data-lang="it">
-        <span class="lang-flag">🇮🇹</span>
-        <span class="lang-texts">
-          <span class="lang-name">Italiano</span>
-          <span class="lang-sub">Continua in italiano</span>
-        </span>
-        <span class="lang-arrow">→</span>
-      </button>
-      <button class="lang-btn" data-lang="en">
-        <span class="lang-flag">🇬🇧</span>
-        <span class="lang-texts">
-          <span class="lang-name">English</span>
-          <span class="lang-sub">Continue in English</span>
-        </span>
-        <span class="lang-arrow">→</span>
-      </button>
+      <div class="lang-grid">
+        <button class="lang-btn" data-lang="it">
+          <span class="lang-flag">🇮🇹</span>
+          <span class="lang-code">IT</span>
+        </button>
+        <button class="lang-btn" data-lang="en">
+          <span class="lang-flag">🇬🇧</span>
+          <span class="lang-code">EN</span>
+        </button>
+      </div>
     </div>
 
     <p class="splash-disclaimer" id="splash-disclaimer">
@@ -578,10 +651,12 @@
     <div class="input-row">
       <textarea id="input" rows="1" placeholder="Chiedi un consiglio su alimentazione e benessere…"></textarea>
       <button class="nf-send" id="send" aria-label="Invia" disabled>
-        <svg class="nf-icon" width="18" height="18" viewBox="0 0 24 18" fill="none">
-          <path d="M2 16 L2 4 L4 4 L9.5 13 L9.5 4 L11.5 4 L11.5 16 L9.5 16 L4 7 L4 16 Z" fill="#bbb"/>
-          <path d="M13.5 16 L13.5 4 L22 4 L22 5.8 L15.5 5.8 L15.5 9.3 L21 9.3 L21 11.1 L15.5 11.1 L15.5 16 Z" fill="#bbb"/>
+        <svg class="nf-icon" width="20" height="20" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+          <!-- Slim arrow tip in top-right corner; NF monogram fills the center -->
+          <path d="M17 5 L23 5 L23 11" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <path d="M23 5 L14.5 13.5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
         </svg>
+        <span class="nf-monogram" aria-hidden="true">NF</span>
         <span class="nf-ring" aria-hidden="true"></span>
       </button>
     </div>
@@ -639,20 +714,33 @@
 
   // Metadata statico per il picker — viene arricchito/sovrascritto da /api/models
   const MODEL_FALLBACK = {
-    gemma: { label: 'Gemma 3 27B',   sub: 'Google · 140 lingue',   short: 'Gemma', color: '#4285F4', available: true },
-    llama: { label: 'Llama 3.3 70B', sub: 'Meta · battle-tested',  short: 'Llama', color: '#E27B58', available: true },
-    qwen:  { label: 'Qwen3 80B',     sub: 'Alibaba · veloce',      short: 'Qwen',  color: '#9333EA', available: true },
+    gemma: { label: 'Gemma 3 27B',   sub: '',   short: 'Gemma', color: '#4285F4', available: true },
+    llama: { label: 'Llama 3.3 70B', sub: '',   short: 'Llama', color: '#E27B58', available: true },
+    qwen:  { label: 'Qwen3 80B',     sub: '',   short: 'Qwen',  color: '#9333EA', available: true },
   };
   const MODEL_ORDER = ['gemma', 'llama', 'qwen'];
 
   /* ───────── State ───────── */
+  // Query-string overrides let us preview specific starting states
+  // (used by the design canvas iframes). Format:
+  //   ?lang=it|en  &theme=light|dark  &skipSplash=1  &reset=1
+  const _qs = new URLSearchParams(location.search);
+  const _qsLang  = _qs.get('lang');
+  const _qsTheme = _qs.get('theme');
+  const _qsSkip  = _qs.get('skipSplash');
+  const _qsReset = _qs.get('reset');
+  if (_qsReset === '1') {
+    ['nutrifit.lang','nutrifit.theme','nutrifit.model','nutrifit.splashDone'].forEach(k => localStorage.removeItem(k));
+  }
   const state = {
-    lang: localStorage.getItem('nutrifit.lang') || 'it',
-    theme: localStorage.getItem('nutrifit.theme') || 'light',
+    lang:  _qsLang  || localStorage.getItem('nutrifit.lang')  || 'it',
+    theme: _qsTheme || localStorage.getItem('nutrifit.theme') || 'light',
     model: localStorage.getItem('nutrifit.model') || 'gemma',
     messages: [],    // { role: 'user' | 'bot' | 'error', content: string }
     typing: false,
-    splashDone: localStorage.getItem('nutrifit.splashDone') === '1',
+    splashDone: _qsSkip === '1'
+      ? true
+      : (_qsReset === '1' ? false : localStorage.getItem('nutrifit.splashDone') === '1'),
     models: JSON.parse(JSON.stringify(MODEL_FALLBACK)),  // riempito da /api/models
   };
 
@@ -932,7 +1020,9 @@
         <span class="model-dot"></span>
         <span class="model-texts">
           <span class="model-title">${escapeHtml(m.label || key)}</span>
-          <span class="model-sub">${escapeHtml(m.sub || '')}${m.available === false ? ' · chiave mancante' : ''}</span>
+          ${(m.sub || m.available === false)
+            ? `<span class="model-sub">${escapeHtml(m.sub || '')}${m.available === false ? (m.sub ? ' · ' : '') + 'chiave mancante' : ''}</span>`
+            : ''}
         </span>
         <span class="model-check${key === state.model ? '' : ' hidden'}">✓</span>
       `;

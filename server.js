@@ -16,19 +16,19 @@ const MODELS = {
   gemma: {
     id:       'google/gemma-3-27b-it',
     label:    'Gemma 3 27B',
-    sub:      'Google · 140 lingue',
+    sub:      '',
     envKey:   'OPENROUTER_API_KEY_GEMMA',
   },
   llama: {
     id:       'meta-llama/llama-3.3-70b-instruct',
     label:    'Llama 3.3 70B',
-    sub:      'Meta · battle-tested',
+    sub:      '',
     envKey:   'OPENROUTER_API_KEY_LLAMA',
   },
   qwen: {
     id:       'qwen/qwen3-next-80b-a3b-instruct',
     label:    'Qwen3 80B',
-    sub:      'Alibaba · veloce',
+    sub:      '',
     envKey:   'OPENROUTER_API_KEY_QWEN',
   },
 };
